@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AddProductDialog</class>
+ <widget class="QDialog" name="AddProductDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>420</width>
+    <height>560</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Добавить товар</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="title_lbl">
+     <property name="text">
+      <string>Добавление товара</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QFormLayout" name="formLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="article_lbl">
+       <property name="text">
+        <string>Артикул:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLineEdit" name="article_le"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="type_lbl">
+       <property name="text">
+        <string>Тип товара:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="type_cbx"/>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="price_lbl">
+       <property name="text">
+        <string>Цена (руб):</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QSpinBox" name="price_sb">
+       <property name="maximum">
+        <number>9999999</number>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="supplier_lbl">
+       <property name="text">
+        <string>Поставщик:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QComboBox" name="supplier_cbx"/>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="producer_lbl">
+       <property name="text">
+        <string>Производитель:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QComboBox" name="producer_cbx"/>
+     </item>
+     <item row="6" column="0">
+      <widget class="QLabel" name="category_lbl">
+       <property name="text">
+        <string>Категория:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="QComboBox" name="category_cbx"/>
+     </item>
+     <item row="7" column="0">
+      <widget class="QLabel" name="discount_lbl">
+       <property name="text">
+        <string>Скидка (%):</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="1">
+      <widget class="QSpinBox" name="discount_sb">
+       <property name="maximum">
+        <number>100</number>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="0">
+      <widget class="QLabel" name="amount_lbl">
+       <property name="text">
+        <string>Кол-во на складе:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="1">
+      <widget class="QSpinBox" name="amount_sb">
+       <property name="maximum">
+        <number>999999</number>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="0">
+      <widget class="QLabel" name="desc_lbl">
+       <property name="text">
+        <string>Описание:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="1">
+      <widget class="QLineEdit" name="desc_le"/>
+     </item>
+     <item row="10" column="0">
+      <widget class="QLabel" name="photo_lbl">
+       <property name="text">
+        <string>Фото (имя файла):</string>
+       </property>
+      </widget>
+     </item>
+     <item row="10" column="1">
+      <widget class="QLineEdit" name="photo_le">
+       <property name="placeholderText">
+        <string>например: 1.jpg</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="buttons_layout">
+     <item>
+      <widget class="QPushButton" name="save_btn">
+       <property name="styleSheet">
+        <string/>
+       </property>
+       <property name="text">
+        <string>Сохранить</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="cancel_btn">
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>Отмена</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,167 @@
+-- Создание базы данных (если не существует)
+CREATE DATABASE IF NOT EXISTS `boots_store`
+  CHARACTER SET utf8mb3
+  COLLATE utf8mb3_general_ci;
+
+USE `boots_store`;
+
+-- Отключение проверки внешних ключей для безопасного создания таблиц
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- --------------------------------------------------------
+-- Таблица `category_products`
+-- --------------------------------------------------------
+CREATE TABLE `category_products` (
+  `id_category` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id_category`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- --------------------------------------------------------
+-- Таблица `order_status`
+-- --------------------------------------------------------
+CREATE TABLE `order_status` (
+  `id_status` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(8) DEFAULT NULL,
+  PRIMARY KEY (`id_status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- --------------------------------------------------------
+-- Таблица `pick_up_points`
+-- --------------------------------------------------------
+CREATE TABLE `pick_up_points` (
+  `id_point` int NOT NULL AUTO_INCREMENT,
+  `index` int DEFAULT NULL,
+  `city` varchar(255) DEFAULT NULL,
+  `street` varchar(255) DEFAULT NULL,
+  `house` int DEFAULT NULL,
+  PRIMARY KEY (`id_point`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- --------------------------------------------------------
+-- Таблица `users_roles`
+-- --------------------------------------------------------
+CREATE TABLE `users_roles` (
+  `id_role` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(23) DEFAULT NULL,
+  PRIMARY KEY (`id_role`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- --------------------------------------------------------
+-- Таблица `users`
+-- --------------------------------------------------------
+CREATE TABLE `users` (
+  `id_user` int NOT NULL AUTO_INCREMENT,
+  `last_name` varchar(255) DEFAULT NULL,
+  `first_name` varchar(255) DEFAULT NULL,
+  `pataranomic` varchar(255) DEFAULT NULL,
+  `login` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `id_role` int DEFAULT NULL,
+  PRIMARY KEY (`id_user`),
+  KEY `id_role` (`id_role`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- --------------------------------------------------------
+-- Таблица `suppliers`
+-- --------------------------------------------------------
+CREATE TABLE `suppliers` (
+  `id_suppliers` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(13) DEFAULT NULL,
+  PRIMARY KEY (`id_suppliers`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- --------------------------------------------------------
+-- Таблица `producer`
+-- --------------------------------------------------------
+CREATE TABLE `producer` (
+  `id_producer` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id_producer`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- --------------------------------------------------------
+-- Таблица `type_products`
+-- --------------------------------------------------------
+CREATE TABLE `type_products` (
+  `id_type` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- --------------------------------------------------------
+-- Таблица `products`
+-- --------------------------------------------------------
+CREATE TABLE `products` (
+  `id_product` int NOT NULL AUTO_INCREMENT,
+  `article` varchar(255) DEFAULT NULL,
+  `id_type` int DEFAULT NULL,
+  `unit` varchar(255) DEFAULT NULL,
+  `price` int DEFAULT NULL,
+  `id_suppliers` int DEFAULT NULL,
+  `id_producer` int DEFAULT NULL,
+  `id_category` int DEFAULT NULL,
+  `discount` int DEFAULT NULL,
+  `amount_storage` int DEFAULT NULL,
+  `descrition` varchar(255) DEFAULT NULL,
+  `photo` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id_product`),
+  KEY `id_type` (`id_type`,`id_suppliers`,`id_producer`,`id_category`),
+  KEY `id_suppliers` (`id_suppliers`),
+  KEY `id_producer` (`id_producer`),
+  KEY `id_category` (`id_category`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- --------------------------------------------------------
+-- Таблица `orders`
+-- --------------------------------------------------------
+CREATE TABLE `orders` (
+  `id_order` int NOT NULL AUTO_INCREMENT,
+  `date_order` date DEFAULT NULL,
+  `date_delivery` date DEFAULT NULL,
+  `id_pick_up_ponit` int DEFAULT NULL,
+  `id_client` int DEFAULT NULL,
+  `code` int DEFAULT NULL,
+  `id_status` int DEFAULT NULL,
+  PRIMARY KEY (`id_order`),
+  KEY `id_pick_up_ponit` (`id_pick_up_ponit`,`id_client`,`id_status`),
+  KEY `id_status` (`id_status`),
+  KEY `id_client` (`id_client`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- --------------------------------------------------------
+-- Таблица `product_in_order`
+-- --------------------------------------------------------
+CREATE TABLE `product_in_order` (
+  `id_product_in_order` int NOT NULL AUTO_INCREMENT,
+  `id_order` int DEFAULT NULL,
+  `id_product` int DEFAULT NULL,
+  `amount_product` int DEFAULT NULL,
+  PRIMARY KEY (`id_product_in_order`),
+  KEY `id_order` (`id_order`,`id_product`),
+  KEY `id_product` (`id_product`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- --------------------------------------------------------
+-- Добавление внешних ключей
+-- --------------------------------------------------------
+ALTER TABLE `users`
+  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`id_role`) REFERENCES `users_roles` (`id_role`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+ALTER TABLE `orders`
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`id_status`) REFERENCES `order_status` (`id_status`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`id_client`) REFERENCES `users` (`id_user`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `orders_ibfk_3` FOREIGN KEY (`id_pick_up_ponit`) REFERENCES `pick_up_points` (`id_point`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+ALTER TABLE `products`
+  ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`id_suppliers`) REFERENCES `suppliers` (`id_suppliers`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `products_ibfk_2` FOREIGN KEY (`id_producer`) REFERENCES `producer` (`id_producer`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `products_ibfk_3` FOREIGN KEY (`id_type`) REFERENCES `type_products` (`id_type`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `products_ibfk_4` FOREIGN KEY (`id_category`) REFERENCES `category_products` (`id_category`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+ALTER TABLE `product_in_order`
+  ADD CONSTRAINT `product_in_order_ibfk_1` FOREIGN KEY (`id_order`) REFERENCES `orders` (`id_order`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `product_in_order_ibfk_2` FOREIGN KEY (`id_product`) REFERENCES `products` (`id_product`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- Включение проверки внешних ключей
+SET FOREIGN_KEY_CHECKS = 1;
